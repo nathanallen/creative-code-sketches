@@ -66,9 +66,6 @@ var nextWord = function(){
   return word;
 }
 
-const N = 30;
-iters = 30;
-els = document.querySelectorAll("td");
 
 var forever = (function() {
 
@@ -82,26 +79,63 @@ var forever = (function() {
 
 }());
 
+var els = document.querySelectorAll("td");
+
 function nextSequentialGrid(){
   for(var el of els ) {
     l = nextLetter();
     el.innerText = l;
   }
 }
-
 function nextRandGrid(){
   for(var el of els ) {
     el.innerText = randLetter();
   }
 }
-
 function nextRandGridGhosting(){
   for(var el of els ) {
     if (Math.random() <= 0.25){
       el.innerText = nextLetter();
+      continue;
+    }
+    if (Math.random() <= 0.05){
+      el.innerText = " ";
     }
   }
 }
 
+function nextRandGridGhostingFlyers(){
+  for(var el of els ) {
+    if (Math.random() <= 0.25){
+      el.innerText = nextLetter();
+      continue;
+    }
+    if (Math.random() <= 0.05){
+      el.innerText = " ";
+    }
+    if (Math.random() <= 0.01){
+      fly(el);
+    }
+  }
+}
+
+
+function fly(el, steps=5){
+  var letter = el.innerText;
+  var el = el;
+  var interval = setInterval(function(){
+    el.setAttribute("style", "border: none;")
+    el = el.nextElementSibling
+    el.innerText = letter;
+    el.setAttribute("style", "border: 1px solid blue;")
+  }, 300)
+  // setTimeout(function(){
+  //   clearInterval(this)
+  // }.bind(interval), 900)
+}
+
+
 // forever(nextSequentialGrid)();
+// forever(nextRandGrid)();
 forever(nextRandGridGhosting)();
+// forever(nextRandGridGhostingFlyers)();
