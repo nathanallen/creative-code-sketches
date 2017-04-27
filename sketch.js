@@ -67,70 +67,41 @@ var nextWord = function(){
 }
 
 const N = 30;
-function setup() {
-  createCanvas(N*N, N*N);
-}
+iters = 30;
+els = document.querySelectorAll("td");
 
-function draw() {
+var forever = (function() {
 
-  eraseSpaceBySpace();
-  fillRandCell();
+  return function setup(cb) {
+    function repeat(){
+      cb()
+      setTimeout(repeat, 200)
+    }
+    return repeat;
+  }
 
-  // renderWordByWord();
-  // renderBigLetter();
+}());
 
-}
-
-
-function eraseSpaceBySpace(){
-  pos = nextPos();
-  // noStroke()
-  if (nextSpaceBool()) {
-    // DO NOTHING (e.g. it's a "word" in a sentence)
-  } else {
-    // e.g. it's a space between words that we want to erase
-    fill("rgb(255,255,255)")
-    rect(pos.x*N, pos.y*N, N, N)
+function nextSequentialGrid(){
+  for(var el of els ) {
+    l = nextLetter();
+    el.innerText = l;
   }
 }
 
-function fillRandCell(letter=""){
-  pos = randPos();
-
-  /* partially erase cell */
-  noStroke()
-  fill("rgba(255,255,255)")
-  rect(pos.x*N, pos.y*N, N, N)
-
-  /* and then add randomly colored nextLetter to cell */
-  c = color(randColor());
-  fill(c);
-  textSize(N)
-  text(letter || nextLetter(), pos.x*N, pos.y*N, N, N);
-}
-
-function renderWordByWord(){
-  /* print out sentences word by word */
-  pos = nextPos();
-  c = color(randColor());
-  fill(c);
-  textSize(N)
-  text(nextWord(), pos.x*N, pos.y*N, N, N);
-}
-
-function renderBigLetter(){
-  if (Math.random() < 0.1){
-    c = color(randColor());
-    fill(c);
-    textSize(N*12)
-    text(nextLetter(), rand(N*N), rand(N*N), N*12, N*12);
+function nextRandGrid(){
+  for(var el of els ) {
+    el.innerText = randLetter();
   }
 }
 
-
-function mousePressed() {
-  if (mouseX > 0 && mouseX < 100 && mouseY > 0 && mouseY < 100) {
-    var fs = fullscreen();
-    fullscreen(!fs);
+function nextRandGridGhosting(){
+  for(var el of els ) {
+    if (Math.random() <= 0.25){
+      el.innerText = nextLetter();
+    }
   }
 }
+
+// forever(nextSequentialGrid)();
+forever(nextRandGridGhosting)();
