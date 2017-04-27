@@ -1,5 +1,9 @@
+function randLetter(){
+  return String.fromCharCode(rand(10000000000));
+}
+
 var nextLetter = (function(){
-  var idx = 40;
+  var idx = 0;
   return function(reverse=false){
     return String.fromCharCode(idx++);
   }
@@ -69,7 +73,16 @@ function setup() {
 
 function draw() {
 
-  /* NEXT CELL (to erase cell) */
+  eraseSpaceBySpace();
+  fillRandCell();
+
+  // renderWordByWord();
+  // renderBigLetter();
+
+}
+
+
+function eraseSpaceBySpace(){
   pos = nextPos();
   // noStroke()
   if (nextSpaceBool()) {
@@ -79,27 +92,41 @@ function draw() {
     fill("rgb(255,255,255)")
     rect(pos.x*N, pos.y*N, N, N)
   }
+}
 
-  /* RANDOM CELL (to draw character) */
+function fillRandCell(letter=""){
   pos = randPos();
+
   /* partially erase cell */
   noStroke()
   fill("rgba(255,255,255)")
   rect(pos.x*N, pos.y*N, N, N)
 
-  /* add randomly colored char to cell */
+  /* and then add randomly colored nextLetter to cell */
   c = color(randColor());
   fill(c);
   textSize(N)
-  text(nextLetter(), pos.x*N, pos.y*N, N, N);
-
-  /* print out sentences char by char */
-  // pos = nextPos();
-  // c = color(randColor());
-  // fill(c);
-  // textSize(N)
-  // text(nextWord(), pos.x*N, pos.y*N, N, N);
+  text(letter || nextLetter(), pos.x*N, pos.y*N, N, N);
 }
+
+function renderWordByWord(){
+  /* print out sentences word by word */
+  pos = nextPos();
+  c = color(randColor());
+  fill(c);
+  textSize(N)
+  text(nextWord(), pos.x*N, pos.y*N, N, N);
+}
+
+function renderBigLetter(){
+  if (Math.random() < 0.1){
+    c = color(randColor());
+    fill(c);
+    textSize(N*12)
+    text(nextLetter(), rand(N*N), rand(N*N), N*12, N*12);
+  }
+}
+
 
 function mousePressed() {
   if (mouseX > 0 && mouseX < 100 && mouseY > 0 && mouseY < 100) {
