@@ -13,4 +13,4 @@ Demo: Open [paint-sentence/index.html](nathanallen.github.io/creative-code-sketc
 #### boom-box
 A mashup of WebAudio and P5js.
 
-Demo: Open [boom-box/index.html](nathanallen.github.io/creative-code-sketches/paint-sentence) in your browser.
+Demo: Open [boom-box/index.html](nathanallen.github.io/creative-code-sketches/boom-box) in your browser.
