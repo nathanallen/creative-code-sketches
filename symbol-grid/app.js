@@ -95,6 +95,7 @@ function nextRandGrid(){
 function nextRandGridGhosting(){
   for(var el of els ) {
     if (Math.random() <= 0.25){
+      el.setAttribute("style", `color:${randColor()};`);
       el.innerText = nextLetter();
       continue;
     }
